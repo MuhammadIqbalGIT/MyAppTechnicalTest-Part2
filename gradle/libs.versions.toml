@@ -10,8 +10,9 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.1.4"
 navigation = "2.7.7"
-ksp = "2.0.21-1.0.27"   # ✅ updated
-
+ksp = "2.0.21-1.0.27"
+retrofit = "2.11.0"
+loggingInterceptor = "4.12.0"
 hilt = "2.49"
 hiltCompiler = "2.49"
 coil = "2.6.0"
@@ -29,7 +30,9 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation_ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 
 coilAndroid = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
@@ -40,6 +43,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

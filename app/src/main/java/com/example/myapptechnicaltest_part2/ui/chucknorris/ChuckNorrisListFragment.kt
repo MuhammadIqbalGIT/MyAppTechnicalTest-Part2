@@ -1,60 +1,72 @@
 package com.example.myapptechnicaltest_part2.ui.chucknorris
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapptechnicaltest_part2.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.data.source.Resource
+import com.example.myapptechnicaltest_part2.databinding.FragmentChuckNorrisListBinding
+import com.example.myapptechnicaltest_part2.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class ChuckNorrisListFragment : BaseFragment<FragmentChuckNorrisListBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentChuckNorrisListBinding
+        get() = FragmentChuckNorrisListBinding::inflate
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ChuckNorrisListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ChuckNorrisListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val viewModel: ChuckNorrisViewModel by viewModels()
+    private lateinit var adapter: ChuckNorrisAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding) {
+            initUI()
+            initObserve()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chuck_norris_list, container, false)
+    override fun FragmentChuckNorrisListBinding.initUI() {
+        adapter = ChuckNorrisAdapter()
+        rvMeals.layoutManager = LinearLayoutManager(requireContext())
+        rvMeals.adapter = adapter
+
+        tilSearch.setEndIconOnClickListener {
+            val query = etSearch.text?.toString()?.trim()
+            if (!query.isNullOrEmpty()) {
+                pbChuckNorris.visibility = View.VISIBLE
+                viewModel.getMealsDetailsById(query)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChuckNorrisListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChuckNorrisListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    override fun FragmentChuckNorrisListBinding.initObserve() {
+        lifecycleScope.launch {
+            viewModel.searchChuckNorris.collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        pbChuckNorris.visibility = View.GONE
+                        adapter.submitList(resource.data)
+                    }
+                    is Resource.Error -> {
+                        pbChuckNorris.visibility = View.GONE
+                        adapter.submitList(emptyList())
+                    }
+                    is Resource.Empty -> {
+                        pbChuckNorris.visibility = View.GONE
+                        adapter.submitList(emptyList())
+                    }
+                    is Resource.Standby -> {
+                        pbChuckNorris.visibility = View.GONE
+                    }
                 }
             }
+        }
     }
 }

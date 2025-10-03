@@ -20,12 +20,31 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        buildConfig = true
-        dataBinding = true
-        viewBinding = true
+
+    flavorDimensions.add("env")
+
+    productFlavors {
+
+        create("dev") {
+            dimension = "env"
+            buildConfigField("String", "BASE_API", "\"https://api.chucknorris.io/\"")
+        }
+
+        create("prod") {
+            dimension = "env"
+            buildConfigField("String", "BASE_API", "\"https://api.chucknorris.io/\"")
+        }
     }
 
+
+    buildFeatures {
+        //   compose = true
+        buildConfig = true
+        //noinspection DataBindingWithoutKapt
+        dataBinding = true
+        viewBinding = true
+
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -42,11 +61,17 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    dynamicFeatures += setOf(":core")
+    //dynamicFeatures += setOf(":core")
+
+    packaging {
+        resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+        }
+    }
 }
 
 dependencies {
-
+    implementation(project(":core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -63,4 +88,7 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    //coil for load image
+    implementation(libs.coilAndroid)
 }
