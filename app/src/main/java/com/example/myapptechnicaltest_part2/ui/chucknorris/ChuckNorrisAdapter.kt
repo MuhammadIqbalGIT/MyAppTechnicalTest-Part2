@@ -37,7 +37,7 @@ class ChuckNorrisAdapter :
                 tvCategory.text = if (item.categories.isNotEmpty()) {
                     item.categories.joinToString(", ")
                 } else {
-                    "Uncategorized"
+                    ""
                 }
             }
         }

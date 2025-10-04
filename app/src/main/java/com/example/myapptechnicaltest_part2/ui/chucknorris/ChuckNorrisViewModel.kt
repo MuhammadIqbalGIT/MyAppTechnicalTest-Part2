@@ -21,7 +21,7 @@ class ChuckNorrisViewModel @Inject constructor(
         get() = _searchChuckNorris
 
 
-    fun getMealsDetailsById(param : String){
+    fun searchChuckNorris(param : String){
         viewModelScope.launch {
             _searchChuckNorris.value = Resource.Loading()
             useCase.searchChuckNorrisJokes(param).collect{

@@ -16,27 +16,27 @@
             android:layout_height="wrap_content"
             android:padding="12dp">
 
-            <!-- Icon Chuck Norris -->
             <ImageView
                 android:id="@+id/imgChuck"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:contentDescription="@string/img"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvJokeText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:textSize="14sp"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@id/imgChuck"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/imgChuck"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Chuck Norris can divide by zero." />
 
             <TextView
@@ -45,11 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
+                android:textColor="#212121"
                 android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imgChuck"
                 app:layout_constraintTop_toBottomOf="@id/tvJokeText"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="dev, sport" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

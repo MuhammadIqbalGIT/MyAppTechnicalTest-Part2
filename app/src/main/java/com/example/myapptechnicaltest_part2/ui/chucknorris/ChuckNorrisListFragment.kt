@@ -13,6 +13,8 @@ import com.example.myapptechnicaltest_part2.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import com.example.myapptechnicaltest_part2.R
+
 
 @AndroidEntryPoint
 class ChuckNorrisListFragment : BaseFragment<FragmentChuckNorrisListBinding>() {
@@ -21,6 +23,7 @@ class ChuckNorrisListFragment : BaseFragment<FragmentChuckNorrisListBinding>() {
 
     private val viewModel: ChuckNorrisViewModel by viewModels()
     private lateinit var adapter: ChuckNorrisAdapter
+    private var hasSearched = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,34 +39,62 @@ class ChuckNorrisListFragment : BaseFragment<FragmentChuckNorrisListBinding>() {
         rvMeals.adapter = adapter
 
         tilSearch.setEndIconOnClickListener {
-            val query = etSearch.text?.toString()?.trim()
-            if (!query.isNullOrEmpty()) {
-                pbChuckNorris.visibility = View.VISIBLE
-                viewModel.getMealsDetailsById(query)
-            }
+            searchData()
+        }
+        btnSearch.setOnClickListener {
+            searchData()
         }
     }
 
+    private fun searchData() {
+        val query = binding.etSearch.text?.toString()?.trim()
+        hasSearched = true
+        if (!query.isNullOrEmpty()) {
+            binding.pbChuckNorris.visibility = View.VISIBLE
+            viewModel.searchChuckNorris(query)
+        } else {
+            binding.tvEmptyState.text = getString(R.string.please_search)
+            binding.tvEmptyState.visibility = View.VISIBLE
+            adapter.submitList(emptyList())
+        }
+    }
 
     override fun FragmentChuckNorrisListBinding.initObserve() {
         lifecycleScope.launch {
             viewModel.searchChuckNorris.collect { resource ->
                 when (resource) {
-                    is Resource.Loading -> {}
+                    is Resource.Loading -> {
+                        pbChuckNorris.visibility = View.VISIBLE
+                        tvEmptyState.visibility = View.GONE
+                    }
                     is Resource.Success -> {
                         pbChuckNorris.visibility = View.GONE
-                        adapter.submitList(resource.data)
+                        val data = resource.data
+                        adapter.submitList(data)
+
+                        tvEmptyState.text = if (data.isNullOrEmpty()) {
+                            if (hasSearched) getString(R.string.data_not_found)
+                            else getString(R.string.please_search)
+                        } else ""
+
+                        tvEmptyState.visibility = if (data.isNullOrEmpty()) View.VISIBLE else View.GONE
                     }
                     is Resource.Error -> {
                         pbChuckNorris.visibility = View.GONE
                         adapter.submitList(emptyList())
+                        tvEmptyState.text = getString(R.string.data_not_found)
+                        tvEmptyState.visibility = View.VISIBLE
                     }
                     is Resource.Empty -> {
                         pbChuckNorris.visibility = View.GONE
                         adapter.submitList(emptyList())
+                        tvEmptyState.text = getString(R.string.data_not_found)
+                        tvEmptyState.visibility = View.VISIBLE
                     }
                     is Resource.Standby -> {
                         pbChuckNorris.visibility = View.GONE
+                        tvEmptyState.text = getString(R.string.please_search)
+                        tvEmptyState.visibility = View.VISIBLE
                     }
                 }
             }

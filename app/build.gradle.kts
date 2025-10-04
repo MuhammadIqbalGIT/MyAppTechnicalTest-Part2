@@ -20,7 +20,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-
     flavorDimensions.add("env")
 
     productFlavors {
@@ -35,15 +34,10 @@ android {
             buildConfigField("String", "BASE_API", "\"https://api.chucknorris.io/\"")
         }
     }
-
-
     buildFeatures {
-        //   compose = true
         buildConfig = true
-        //noinspection DataBindingWithoutKapt
         dataBinding = true
         viewBinding = true
-
     }
     buildTypes {
         release {
@@ -61,7 +55,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    //dynamicFeatures += setOf(":core")
 
     packaging {
         resources {

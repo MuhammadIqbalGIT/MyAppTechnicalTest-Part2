@@ -4,6 +4,6 @@
     <item
         android:id="@+id/chuckNorrisListFragment"
         android:icon="@drawable/ic_filt"
-        android:title="Home" />
+        android:title="@string/home" />
 
 </menu>

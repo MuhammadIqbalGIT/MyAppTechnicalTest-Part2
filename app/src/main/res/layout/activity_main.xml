@@ -14,7 +14,8 @@ tools:context=".main.MainActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/navView"/>
+    app:layout_constraintBottom_toTopOf="@id/navView"
+    tools:layout="@layout/fragment_chuck_norris_list" />
 
 <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/navView"
