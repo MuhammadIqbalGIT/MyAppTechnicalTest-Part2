@@ -10,4 +10,5 @@
     <string name="home">Home</string>
     <string name="please_search">Silahkan cari data</string>
     <string name="data_not_found">Pencarian Tidak Ditemukan</string>
+    <string name="txtsearch">Cari</string>
 </resources>
