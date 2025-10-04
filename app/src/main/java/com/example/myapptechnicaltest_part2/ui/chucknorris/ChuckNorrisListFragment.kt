@@ -35,8 +35,8 @@ class ChuckNorrisListFragment : BaseFragment<FragmentChuckNorrisListBinding>() {
 
     override fun FragmentChuckNorrisListBinding.initUI() {
         adapter = ChuckNorrisAdapter()
-        rvMeals.layoutManager = LinearLayoutManager(requireContext())
-        rvMeals.adapter = adapter
+        rvChuckNorris.layoutManager = LinearLayoutManager(requireContext())
+        rvChuckNorris.adapter = adapter
 
         tilSearch.setEndIconOnClickListener {
             searchData()
